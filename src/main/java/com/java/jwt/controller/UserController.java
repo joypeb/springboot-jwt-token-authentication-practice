@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody UserJoinRequest userJoinRequest) {
         log.info("POST /api/v1/users/join RequestBody : " + userJoinRequest.toString());
-        String result = userService.join(userJoinRequest.getUserName(), userJoinRequest.getUserName());
+        String result = userService.join(userJoinRequest.getUserName(), userJoinRequest.getPassword());
         return ResponseEntity.ok().body(result);
     }
 }

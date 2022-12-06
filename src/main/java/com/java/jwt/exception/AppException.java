@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AppException extends Throwable {
-
+public class AppException extends RuntimeException {
     private ErrorCode errorCode;
     private String message;
 }

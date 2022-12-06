@@ -18,13 +18,15 @@ public class UserService {
     private final UserRepository userRepository;
     public String join(String userName, String password) {
         userRepository.findByUserName(userName).ifPresent(
-                user -> new AppException(ErrorCode.DUPLICATE_USER_NAME, String.format("%s가 중복입니다",userName)));
+                user -> {
+                    throw new AppException(ErrorCode.DUPLICATE_USER_NAME, String.format("%s가 중복입니다",userName));
+                });
 
         User user = UserJoinRequest.toEntity(userName,password,UserRole.USER);
         User userResult = userRepository.save(user);
 
         if(userResult.getUserName() == null)
-            new AppException(ErrorCode.BAD_DATABASE_SERVER, "DB서버에 에러가 발생했습니다");
+            throw new AppException(ErrorCode.BAD_DATABASE_SERVER, "DB서버에 에러가 발생했습니다");
 
         return "Success";
     }

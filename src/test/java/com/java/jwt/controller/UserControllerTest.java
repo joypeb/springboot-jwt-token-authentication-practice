@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -54,8 +55,8 @@ public class UserControllerTest {
         String userName = "id1";
         String password = "1234";
 
-        when(userService.join(userName,password))
-                .thenThrow(new AppException(ErrorCode.DUPLICATE_USER_NAME, ""));
+        when(userService.join(any(),any()))
+                .thenThrow(new AppException(ErrorCode.DUPLICATE_USER_NAME,""));
 
         mockMvc.perform(post("/api/v1/users/join")
                 .contentType(MediaType.APPLICATION_JSON)
