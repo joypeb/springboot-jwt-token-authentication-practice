@@ -2,6 +2,7 @@ package com.java.jwt.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.jwt.domain.UserRole;
+import com.java.jwt.domain.dto.UserJoinRequest;
 import com.java.jwt.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("회원가입 성공")
-    void join() {
+    void join() throws Exception {
         String userName = "id1";
         String password = "1234";
         UserRole userRole = UserRole.USER;
