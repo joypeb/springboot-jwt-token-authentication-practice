@@ -6,3 +6,7 @@ SpringBoot Security를 이용한 인증 연습 프로젝트
 로그인시 JWT Token발급 권한부여, filterchain을 통해 접근제어등을 연습한 프로젝트입니다
 
 ## EndPoint
+- join
+```
+POST /api/v1/users/join
+```

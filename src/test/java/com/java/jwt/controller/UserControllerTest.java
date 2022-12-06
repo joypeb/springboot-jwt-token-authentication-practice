@@ -44,4 +44,20 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("회원가입 실패")
+    void join_fail() throws Exception {
+        String userName = "id1";
+        String password = "1234";
+
+        when(userService.join(userName,password))
+                .thenThrow(new RuntimeException(String.format("%s가 이미 존재합니다", userName)));
+
+        mockMvc.perform(post("/api/v1/users/join")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(new UserJoinRequest())))
+                .andDo(print())
+                .andExpect(status().isExpectationFailed());
+    }
 }
