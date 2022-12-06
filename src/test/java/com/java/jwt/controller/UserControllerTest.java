@@ -3,9 +3,12 @@ package com.java.jwt.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.jwt.domain.UserRole;
 import com.java.jwt.domain.dto.UserJoinRequest;
+import com.java.jwt.exception.AppException;
+import com.java.jwt.exception.ErrorCode;
 import com.java.jwt.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,7 +43,7 @@ public class UserControllerTest {
 
         mockMvc.perform(post("/api/v1/users/join")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest())))
+                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -52,12 +55,12 @@ public class UserControllerTest {
         String password = "1234";
 
         when(userService.join(userName,password))
-                .thenThrow(new RuntimeException(String.format("%s가 이미 존재합니다", userName)));
+                .thenThrow(new AppException(ErrorCode.DUPLICATE_USER_NAME, ""));
 
         mockMvc.perform(post("/api/v1/users/join")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest())))
+                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
                 .andDo(print())
-                .andExpect(status().isExpectationFailed());
+                .andExpect(status().isConflict());
     }
 }
